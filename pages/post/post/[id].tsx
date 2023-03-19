@@ -104,13 +104,7 @@ export default function PostView({ title, desc, time, view }: Props) {
               ></div>
 
               {/* 본문 */}
-              <div
-                style={{
-                  whiteSpace: "pre-wrap",
-                }}
-              >
-                <HTMLRenderer html={desc} />
-              </div>
+              <HTMLRenderer html={desc} />
 
               {/* 댓글 */}
               <div
