@@ -49,10 +49,11 @@ export default async function handler(
       e: "Exsist bad words",
     });
 
+  let idu = uid(64);
   await prismadb.post.create({
     data: {
       content: content,
-      id: uid(64),
+      id: idu,
       ip: ip,
       title: title,
       isShown: true,
@@ -62,6 +63,6 @@ export default async function handler(
   });
 
   res.send({
-    s: true,
+    s: idu,
   });
 }

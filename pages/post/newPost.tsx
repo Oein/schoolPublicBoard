@@ -75,7 +75,7 @@ export default function PostView() {
                   .then((res) => {
                     let { data } = res;
                     console.log(data);
-                    router.push("/post");
+                    router.push("/post/post/" + data.s);
                   })
                   .catch((e) => {
                     let data =
