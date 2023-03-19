@@ -6,7 +6,8 @@ import Header from "@/components/Header";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { waitUntilAdmined } from "@/utils/amIadmin";
+import NProgress from "nprogress";
+import { PuffLoader } from "react-spinners";
 
 interface Posts {
   id: string;
@@ -22,6 +23,7 @@ export default function Home() {
 
   const fetchData = useCallback(async () => {
     if (!hasMore) return;
+    NProgress.start();
     let puttedURL = "";
     console.log("Fetch data");
     if (posts.length > 0) puttedURL = "?afterID=" + posts[posts.length - 1].id;
@@ -30,6 +32,7 @@ export default function Home() {
     console.log(NewPosts.length);
     if (NewPosts.length < 30) setHasMore(false);
     setPosts((v) => [...v, ...NewPosts]);
+    NProgress.done();
   }, [hasMore, posts]);
 
   useEffect(() => {
@@ -53,7 +56,39 @@ export default function Home() {
           dataLength={posts.length}
           next={fetchData}
           hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
+          loader={
+            <div
+              style={{
+                padding: "2rem",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position: "relative",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "fit-content",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <PuffLoader size={68} color="#60aff0" />
+                </div>
+                <div
+                  style={{
+                    marginTop: "1rem",
+                    position: "relative",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "fit-content",
+                  }}
+                >
+                  Loading
+                </div>
+              </div>
+            </div>
+          }
           className={style.posts}
         >
           {posts.map((v, i) => {
