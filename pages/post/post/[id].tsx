@@ -59,7 +59,7 @@ export default function PostView({ title, desc, time, view }: Props) {
   return (
     <div className={style.container}>
       <div className={style.ccontainer}>
-        <Header to="/post" title="글 보기" />
+        <Header to="/post" title={"글 보기 | " + title} />
         <div
           style={{
             paddingLeft: "8px",
