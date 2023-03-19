@@ -23,6 +23,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
+import cookieAdmin from "@/utils/isthiscookieadmin";
 
 export default async function handler(
   req: NextApiRequest,
@@ -41,7 +42,7 @@ export default async function handler(
       },
       select: {
         isShown: false,
-        ip: false,
+        ip: await cookieAdmin(req.cookies["token"]),
         id: true,
         title: true,
         content: true,

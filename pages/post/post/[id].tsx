@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import style from "@/styles/postView.module.css";
 import kensorship from "kensorship";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoSSR from "react-no-ssr";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,10 @@ import axios from "axios";
 import prismadb from "@/utils/prisma";
 import { GetServerSideProps } from "next";
 import HTMLRenderer from "@/components/HTML_Renderer";
+import { useRouter } from "next/router";
+import FullsizeLoading from "@/components/FullSizeLoading";
+import { waitUntilAdmined } from "@/utils/amIadmin";
+import cookieAdmin from "@/utils/isthiscookieadmin";
 
 interface Message {
   isFromme: boolean;
@@ -22,6 +26,7 @@ interface Props {
   desc: string;
   time: number;
   view: number;
+  ip: string | undefined;
 }
 
 function toBefore(date: Date) {
@@ -29,7 +34,7 @@ function toBefore(date: Date) {
   let before = date.getTime();
   let diff = (now - before) / 1000;
   if (diff <= 5) return "방금전";
-  if (diff < 60) return `${diff}초전`;
+  if (diff < 60) return `${Math.floor(diff)}초전`;
   diff = Math.floor(diff / 60);
   if (diff < 60) return `${diff}분전`;
   diff = Math.floor(diff / 60);
@@ -42,9 +47,17 @@ function toBefore(date: Date) {
   return `${diff}년전`;
 }
 
-export default function PostView({ title, desc, time, view }: Props) {
+export default function PostView({ title, desc, time, view, ip }: Props) {
   let [messages, setMessages] = useState<Message[]>([]);
   let [content, setContent] = useState("");
+  let [loading, setLoading] = useState(false);
+  let [amIadmin, setAmIadmin] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setAmIadmin(await waitUntilAdmined());
+    })();
+  }, []);
+  const router = useRouter();
   const send = () => {
     let badWords = kensorship(content);
     if (badWords.length > 0)
@@ -58,6 +71,7 @@ export default function PostView({ title, desc, time, view }: Props) {
   };
   return (
     <div className={style.container}>
+      <FullsizeLoading loading={loading} />
       <div className={style.ccontainer}>
         <Header to="/post" title={"글 보기 | " + title} />
         <div
@@ -92,6 +106,51 @@ export default function PostView({ title, desc, time, view }: Props) {
                   <span className="material-symbols-outlined">visibility</span>
                   <span>{view}</span>
                 </span>
+                {amIadmin ? (
+                  <>
+                    <span
+                      style={{
+                        height: "100%",
+                        borderLeft: "1px solid black",
+                        marginLeft: "6px",
+                      }}
+                    ></span>
+                    <span
+                      className={style.admin}
+                      onClick={() => {
+                        if (confirm("삭제합니까? 되돌릴 수 없습니다.")) {
+                          setLoading(true);
+                          axios
+                            .get(
+                              `/api/admin/manage/post/delete?postId=${router.query.id}`
+                            )
+                            .then((v) => {
+                              let { data } = v;
+                              if (data.e) toast.error(data.e);
+                              else if (data.s) {
+                                toast.success("성공적으로 삭제했습니다.");
+                                router.push("/post");
+                              }
+                            })
+                            .catch((e) => {
+                              console.error(e);
+                              toast.error(e.toString());
+                            })
+                            .finally(() => {
+                              setLoading(false);
+                            });
+                        }
+                      }}
+                    >
+                      <span className="material-symbols-outlined">delete</span>
+                      <span>글 삭제</span>
+                    </span>
+                    <span>
+                      <span className="material-symbols-outlined">person</span>
+                      <span>{ip || "Unknown"}</span>
+                    </span>
+                  </>
+                ) : null}
               </div>
 
               <div
@@ -213,7 +272,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: parms.id,
     },
     select: {
-      ip: false,
+      ip: await cookieAdmin(context.req.cookies["token"]),
       isShown: false,
       id: false,
       content: true,
@@ -243,6 +302,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       desc: datas.content,
       time: datas.time.getTime(),
       view: datas.view,
+      ip: datas.ip || "Unknown",
     },
   };
 };

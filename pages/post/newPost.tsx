@@ -1,4 +1,3 @@
-import style from "@/styles/newPost.module.css";
 import kensorship from "kensorship";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -17,12 +16,12 @@ export default function PostView() {
     <>
       <FullsizeLoading loading={loading} />
       <Header title="글 쓰기" to="/post" />
-      <div className={style.container}>
+      <div>
         <div className="container">
-          <div className={style.content}>
+          <div>
             <input
               placeholder="제목"
-              className={style.input}
+              className="input"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             ></input>

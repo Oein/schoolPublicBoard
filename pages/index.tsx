@@ -29,6 +29,14 @@ export default function Index() {
             학급 게시판 가기
           </div>
           <div className="button">익명 상담하기 (는 만들고 있습니다)</div>
+          <div
+            className="button"
+            onClick={() => {
+              router.push("/adminProve");
+            }}
+          >
+            관리자 인증하기
+          </div>
           <desc>[허전한데 쓸게 없어서 학교 이미지 넣었습니다.]</desc>
         </div>
       </div>

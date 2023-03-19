@@ -49,3 +49,7 @@
   padding-left: 4px;
   vertical-align: middle;
 }
+.admin > span {
+  color: lightcoral;
+  cursor: pointer;
+}

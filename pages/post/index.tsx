@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { waitUntilAdmined } from "@/utils/amIadmin";
 
 interface Posts {
   id: string;

@@ -27,3 +27,8 @@ model Chat {
   belongsTo String
   ip String
 }
+
+model KeyVal {
+  key String @unique @id
+  val String
+}
