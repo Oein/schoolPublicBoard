@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
 import kensorship from "kensorship";
 import { uid } from "uid";
+import { getClientIp } from "request-ip";
 
 // Req body
 /*
@@ -18,7 +19,7 @@ export default async function handler(
   if (req.method !== "POST") return res.status(404).redirect("/api/404");
   let content = req.body.content;
   let title = req.body.title;
-  let ip = req.headers["x-original-forwarded-for"] || req.socket.remoteAddress;
+  let ip = getClientIp(req);
 
   const invalid_body = () => {
     return res.status(400).send({
