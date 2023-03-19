@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import FullsizeLoading from "@/components/FullSizeLoading";
 import { waitUntilAdmined } from "@/utils/amIadmin";
 import cookieAdmin from "@/utils/isthiscookieadmin";
+import { getClientIp } from "request-ip";
 
 interface Message {
   isFromme: boolean;
@@ -27,6 +28,7 @@ interface Props {
   time: number;
   view: number;
   ip: string | undefined;
+  isMe: boolean;
 }
 
 function toBefore(date: Date) {
@@ -47,7 +49,7 @@ function toBefore(date: Date) {
   return `${diff}년전`;
 }
 
-export default function PostView({ title, desc, time, view, ip }: Props) {
+export default function PostView({ title, desc, time, view, ip, isMe }: Props) {
   let [messages, setMessages] = useState<Message[]>([]);
   let [content, setContent] = useState("");
   let [loading, setLoading] = useState(false);
@@ -106,7 +108,7 @@ export default function PostView({ title, desc, time, view, ip }: Props) {
                   <span className="material-symbols-outlined">visibility</span>
                   <span>{view}</span>
                 </span>
-                {amIadmin ? (
+                {amIadmin || isMe ? (
                   <>
                     <span
                       style={{
@@ -115,6 +117,7 @@ export default function PostView({ title, desc, time, view, ip }: Props) {
                         marginLeft: "6px",
                       }}
                     ></span>
+
                     <span
                       className={style.admin}
                       onClick={() => {
@@ -145,6 +148,18 @@ export default function PostView({ title, desc, time, view, ip }: Props) {
                       <span className="material-symbols-outlined">delete</span>
                       <span>글 삭제</span>
                     </span>
+                  </>
+                ) : null}
+                {amIadmin ? (
+                  <>
+                    <span
+                      style={{
+                        height: "100%",
+                        borderLeft: "1px solid black",
+                        marginLeft: "6px",
+                      }}
+                    ></span>
+
                     <span>
                       <span className="material-symbols-outlined">person</span>
                       <span>{ip || "Unknown"}</span>
@@ -272,7 +287,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: parms.id,
     },
     select: {
-      ip: await cookieAdmin(context.req.cookies["token"]),
+      ip: true,
       isShown: false,
       id: false,
       content: true,
@@ -302,7 +317,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       desc: datas.content,
       time: datas.time.getTime(),
       view: datas.view,
-      ip: datas.ip || "Unknown",
+      ip: (await cookieAdmin(context.req.cookies["token"]))
+        ? datas.ip || "Unknown"
+        : "Unknown",
+      isMe: getClientIp(context.req) === datas.ip,
     },
   };
 };

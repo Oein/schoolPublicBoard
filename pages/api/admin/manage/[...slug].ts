@@ -1,35 +1,41 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
 import { serialize } from "cookie";
+import { getClientIp } from "request-ip";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let cok = req.cookies["token"];
-  if (typeof cok !== "string")
-    return res.send({
-      e: "관리자 인증에 실패하였습니다.",
-    });
-  let cn = await prismadb.keyVal.count({
-    where: {
-      key: "admin",
-      val: cok,
-    },
-  });
-  console.log(cok);
-  if (cn == 0)
-    return res
-      .setHeader(
-        "Set-Cookie",
-        serialize("token", "", {
-          maxAge: -1,
-          path: "/",
-        })
-      )
-      .send({
-        s: false,
+  const checkAdmined = async () => {
+    let cok = req.cookies["token"];
+    if (typeof cok !== "string")
+      return res.send({
+        e: "관리자 인증에 실패하였습니다.",
       });
+    let cn = await prismadb.keyVal.count({
+      where: {
+        key: "admin",
+        val: cok,
+      },
+    });
+    console.log(cok);
+    if (cn == 0) {
+      res
+        .setHeader(
+          "Set-Cookie",
+          serialize("token", "", {
+            maxAge: -1,
+            path: "/",
+          })
+        )
+        .send({
+          s: false,
+        });
+      return false;
+    }
+    return true;
+  };
 
   const invalid_d = () => {
     return res.send({
@@ -48,18 +54,38 @@ export default async function handler(
       let postId = req.query.postId;
       if (typeof postId !== "string") return invalid_d();
 
-      await prismadb.post.delete({
+      let postIp = await prismadb.post.findFirst({
         where: {
           id: postId,
         },
-      });
-      await prismadb.chat.deleteMany({
-        where: {
-          belongsTo: postId,
+        select: {
+          content: false,
+          id: false,
+          ip: true,
+          isShown: false,
+          time: false,
+          title: false,
+          view: false,
         },
       });
+      if (postIp == null) return invalid_d();
+      if (getClientIp(req) == postIp.ip || (await checkAdmined())) {
+        await prismadb.post.delete({
+          where: {
+            id: postId,
+          },
+        });
+        await prismadb.chat.deleteMany({
+          where: {
+            belongsTo: postId,
+          },
+        });
+        return res.send({
+          s: true,
+        });
+      }
       return res.send({
-        s: true,
+        e: "관리자 인증에 실패하였습니다.",
       });
     },
   };
