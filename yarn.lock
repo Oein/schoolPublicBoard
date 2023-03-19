@@ -1554,10 +1554,10 @@ json5@^1.0.2:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
-kensorship@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/kensorship/-/kensorship-1.0.5.tgz#3be01bdbfaaa09f417d48cce97625adf298ce3aa"
-  integrity sha512-4mza++9AX365ZrFptFu8OoMsPhoA0pKbeT9jn8XU+hmVza+Dph26fnePc/CLp96rFb1E+JtrpSdzpym4773Q0g==
+kensorship@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/kensorship/-/kensorship-1.0.8.tgz#c3b35abf93a0b66bbcb3a2b366e3c6bd14cf03aa"
+  integrity sha512-E1W8/y4qgvVR+CHb+Pe5qunMH1UdF33+hOTDbV7SC6R6X3Yrf8sx2VQUCEN1WVI1yDU0bnnLsMQv13Jq92qfmw==
 
 language-subtag-registry@~0.3.2:
   version "0.3.22"
