@@ -1,9 +1,13 @@
 import style from "@/styles/header.module.css";
+import Head from "next/head";
 import Link from "next/link";
 
 export default function Header(props: { to: string; title: string }) {
   return (
     <>
+      <Head>
+        <title>{props.title}</title>
+      </Head>
       <header className={style.header}>
         <Link href={props.to}>
           <span
