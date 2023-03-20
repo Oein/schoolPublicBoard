@@ -62,7 +62,7 @@ a {
   color: white;
 }
 .input {
-  width: calc(100% - 1.5rem);
+  width: calc(100% - 1.3rem);
   font-size: 1.5rem;
   background: none;
   border: 2px solid #ebebeb;
@@ -72,4 +72,7 @@ a {
   margin-bottom: 8px;
   border-radius: 8px;
   padding: 8px;
+}
+select.input {
+  width: 100%;
 }
