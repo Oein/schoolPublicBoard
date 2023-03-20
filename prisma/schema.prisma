@@ -18,6 +18,7 @@ model Post {
   isShown Boolean @default(false)
   view Int @default(0)
   ip String
+  type Int @default(0)
 }
 
 model Chat {

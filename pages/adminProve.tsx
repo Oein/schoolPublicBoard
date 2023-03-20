@@ -12,6 +12,7 @@ export default function Admin() {
         <input
           placeholder="비밀번호"
           className="input"
+          type="password"
           value={val}
           onChange={(e) => setVal(e.target.value)}
         ></input>

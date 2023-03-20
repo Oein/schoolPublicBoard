@@ -19,6 +19,7 @@ export default async function handler(
   if (req.method !== "POST") return res.status(404).redirect("/api/404");
   let content = req.body.content;
   let title = req.body.title;
+  let postType = req.body.type;
   let ip = getClientIp(req);
 
   const invalid_body = () => {
@@ -26,9 +27,11 @@ export default async function handler(
       e: "요청이 잘못되었습니다.",
     });
   };
+  console.log(postType, title, content);
   if (typeof content !== "string") return invalid_body();
   if (typeof title !== "string") return invalid_body();
   if (typeof ip !== "string") return invalid_body();
+  if (typeof postType !== "number") return invalid_body();
 
   if (content.length == 0) return invalid_body();
   if (title.length == 0) return invalid_body();
@@ -59,6 +62,7 @@ export default async function handler(
       isShown: true,
       view: 0,
       time: new Date(),
+      type: postType || 100,
     },
   });
 

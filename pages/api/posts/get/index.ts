@@ -12,38 +12,108 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
 import { convert } from "html-to-text";
+import cookieAdmin from "@/utils/isthiscookieadmin";
+import { getClientIp } from "request-ip";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   let page = req.query.afterID;
+  let isadmin = await cookieAdmin(req.cookies["token"]);
+  let ip = getClientIp(req) || "Unknown";
+  let postTypeSelector = req.query.postType;
+  let notAdminSelectorAdder: any = {
+    where: {
+      OR: [
+        {
+          ip: ip,
+        },
+        {
+          type: {
+            in: [100, 200],
+          },
+        },
+      ],
+    },
+  };
+  let adminSelector: any = {
+    take: 30,
+    orderBy: {
+      time: "desc",
+    },
+    where: {
+      isShown: true,
+    },
+    select: {
+      content: true,
+      id: true,
+      title: true,
+      view: true,
+    },
+  };
+  if (typeof postTypeSelector === "string")
+    if (isadmin) adminSelector["where"]["type"] = parseInt(postTypeSelector);
+    // admin X, select 를 원한
+    else if (
+      parseInt(postTypeSelector) > 0 &&
+      parseInt(postTypeSelector) % 100 == 0
+    )
+      notAdminSelectorAdder["where"]["OR"] = [
+        {
+          type: parseInt(postTypeSelector),
+        },
+      ];
+    else
+      notAdminSelectorAdder["where"]["OR"] = [
+        {
+          ip: ip,
+          type: parseInt(postTypeSelector),
+        },
+      ];
+
   if (page)
-    return res.status(200).send(
-      (
-        await prismadb.post.findMany({
-          take: 30,
-          skip: 1,
-          orderBy: {
-            time: "desc",
-          },
-          cursor: {
-            id: page as string,
-          },
-          where: {
-            isShown: true,
-          },
-          select: {
-            content: true,
-            id: true,
-            title: true,
-            isShown: false,
-            time: false,
-            view: true,
-            ip: false,
-          },
+    if (isadmin)
+      return res.status(200).send(
+        (
+          await prismadb.post.findMany({
+            ...adminSelector,
+            cursor: {
+              id: page as string,
+            },
+            skip: 1,
+          })
+        ).map((v) => {
+          v.content = convert(v.content, {
+            wordwrap: null,
+          }).slice(0, 80);
+          v.title = v.title.slice(0, 40);
+          return v;
         })
-      ).map((v) => {
+      );
+    else
+      return res.status(200).send(
+        (
+          await prismadb.post.findMany({
+            ...adminSelector,
+            ...notAdminSelectorAdder,
+            cursor: {
+              id: page as string,
+            },
+            skip: 1,
+          })
+        ).map((v) => {
+          v.content = convert(v.content, {
+            wordwrap: null,
+          }).slice(0, 80);
+          v.title = v.title.slice(0, 40);
+          return v;
+        })
+      );
+
+  if (isadmin)
+    return res.status(200).send(
+      (await prismadb.post.findMany(adminSelector)).map((v) => {
         v.content = convert(v.content, {
           wordwrap: null,
         }).slice(0, 80);
@@ -52,25 +122,17 @@ export default async function handle(
       })
     );
 
+  console.log(
+    JSON.stringify({
+      ...adminSelector,
+      ...notAdminSelectorAdder,
+    })
+  );
   return res.status(200).send(
     (
       await prismadb.post.findMany({
-        take: 30,
-        orderBy: {
-          time: "desc",
-        },
-        where: {
-          isShown: true,
-        },
-        select: {
-          content: true,
-          id: true,
-          title: true,
-          isShown: false,
-          time: false,
-          view: true,
-          ip: false,
-        },
+        ...adminSelector,
+        ...notAdminSelectorAdder,
       })
     ).map((v) => {
       v.content = convert(v.content, {

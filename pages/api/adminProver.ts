@@ -17,7 +17,7 @@ export default async function handler(
     return res.send({
       e: "잘못된 비밀번호 입니다.",
     });
-  let u = uid(32);
+  let u = uid(256);
   await prismadb.keyVal.update({
     where: {
       key: "admin",
