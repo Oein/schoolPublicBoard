@@ -3078,10 +3078,10 @@ jsonpointer@^5.0.0:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
-kensorship@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/kensorship/-/kensorship-1.0.13.tgz#f62c4463937524bfe7a71980da73cd480d675f18"
-  integrity sha512-wFgMpFYDolqpgLZczqZyWU3gghgihu64JwM9LWmN/D0deW9WXHpEqSVuinKB7ytz8ixk7pKifuGY7Dtjt3cAQA==
+kensorship@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/kensorship/-/kensorship-1.0.14.tgz#2ee461046661509d48bc8d571bcb99b6820a3c67"
+  integrity sha512-LEoEE4HkzqOVbjfh/U3ooL11Tvu2cTQcPuRBAUx7cELgMufcZHD+GWyGLNb8eIPunjTd4hwBUdPzbURoPLXRVg==
   dependencies:
     inko "^1.1.1"
 
