@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import axios from "axios";
 import FullsizeLoading from "@/components/FullSizeLoading";
 import { useRouter } from "next/router";
+import tagName from "@/constants/tagName";
 
 export default function PostView() {
   let [title, setTitle] = useState("");
@@ -31,10 +32,11 @@ export default function PostView() {
               value={postType}
               onChange={(e) => setType(parseInt(e.target.value) || 100)}
             >
-              <option value="100">일반글 / 모두에게 보이기</option>
-              <option value="101">일반글 / 관리자에게만 보이기</option>
-              <option value="200">건의글 / 모두에게 보이기</option>
-              <option value="201">건의글 / 관리자에게만 보이기</option>
+              {Object.keys(tagName).map((i: any) => (
+                <option value={i} key={i}>
+                  {tagName[i]}
+                </option>
+              ))}
             </select>
             <Editor
               tinymceScriptSrc={"/tinymce/tinymce.min.js"}

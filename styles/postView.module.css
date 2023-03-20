@@ -44,11 +44,6 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.detailV > span > span {
-  display: inline-block;
-  padding-left: 4px;
-  vertical-align: middle;
-}
 .admin > span {
   color: lightcoral;
   cursor: pointer;

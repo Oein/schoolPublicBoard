@@ -15,6 +15,8 @@ interface Posts {
   title: string;
   content: string;
   type: number;
+  time: number;
+  view: number;
 }
 
 export default function Home() {
@@ -116,7 +118,17 @@ export default function Home() {
           className={style.posts}
         >
           {posts.map((v, i) => {
-            return <Post id={v.id} title={v.title} desc={v.content} key={i} />;
+            return (
+              <Post
+                id={v.id}
+                title={v.title}
+                desc={v.content}
+                key={i}
+                type={v.type}
+                time={v.time}
+                view={v.view}
+              />
+            );
           })}
         </InfiniteScroll>
       </div>

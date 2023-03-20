@@ -76,3 +76,8 @@ a {
 select.input {
   width: 100%;
 }
+.tags > span > span {
+  display: inline-block;
+  padding-left: 4px;
+  vertical-align: middle;
+}

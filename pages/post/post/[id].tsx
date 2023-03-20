@@ -16,6 +16,8 @@ import FullsizeLoading from "@/components/FullSizeLoading";
 import { waitUntilAdmined } from "@/utils/amIadmin";
 import cookieAdmin from "@/utils/isthiscookieadmin";
 import { getClientIp } from "request-ip";
+import tagName from "@/constants/tagName";
+import TagsView from "@/components/tagsView";
 
 interface Message {
   isFromme: boolean;
@@ -29,27 +31,18 @@ interface Props {
   view: number;
   ip: string | undefined;
   isMe: boolean;
+  type: number;
 }
 
-function toBefore(date: Date) {
-  let now = new Date().getTime();
-  let before = date.getTime();
-  let diff = (now - before) / 1000;
-  if (diff <= 5) return "방금전";
-  if (diff < 60) return `${Math.floor(diff)}초전`;
-  diff = Math.floor(diff / 60);
-  if (diff < 60) return `${diff}분전`;
-  diff = Math.floor(diff / 60);
-  if (diff < 24) return `${diff}시간전`;
-  diff = Math.floor(diff / 24);
-  if (diff < 31) return `${diff}일전`;
-  diff = Math.floor(diff / 31);
-  if (diff < 12) return `${diff}달전`;
-  diff = Math.floor(diff / 12);
-  return `${diff}년전`;
-}
-
-export default function PostView({ title, desc, time, view, ip, isMe }: Props) {
+export default function PostView({
+  title,
+  desc,
+  time,
+  view,
+  ip,
+  isMe,
+  type: postType,
+}: Props) {
   let [messages, setMessages] = useState<Message[]>([]);
   let [content, setContent] = useState("");
   let [loading, setLoading] = useState(false);
@@ -99,15 +92,8 @@ export default function PostView({ title, desc, time, view, ip, isMe }: Props) {
               </h1>
 
               {/* 상세 */}
-              <div className={style.detailV}>
-                <span>
-                  <span className="material-symbols-outlined">timer</span>
-                  <span>{toBefore(new Date(time))}</span>
-                </span>
-                <span>
-                  <span className="material-symbols-outlined">visibility</span>
-                  <span>{view}</span>
-                </span>
+              <div className="tags">
+                <TagsView postType={postType} time={time} view={view} />
                 {amIadmin || isMe ? (
                   <>
                     <span
@@ -288,12 +274,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     select: {
       ip: true,
-      isShown: false,
-      id: false,
       content: true,
       time: true,
       title: true,
       view: true,
+      type: true,
     },
   });
   if (!datas) {
@@ -321,6 +306,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         ? datas.ip || "Unknown"
         : "Unknown",
       isMe: getClientIp(context.req) === datas.ip,
+      type: datas.type,
     },
   };
 };
