@@ -23,6 +23,7 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
   const [posts, setPosts] = useState<Posts[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [alerts, setAlerts] = useState<Posts[]>([]);
   const router = useRouter();
   let postType = router.query.type;
 
@@ -41,8 +42,16 @@ export default function Home() {
     NProgress.done();
   }, [hasMore, router.isReady, posts, postType]);
 
+  const fetch공지 = useCallback(async () => {
+    if (!router.isReady) return;
+    if (parseInt((postType as string) || "0") == 300) return;
+    const NewPosts = (await axios.get(`/api/alert/get`)).data! as Posts[];
+    setAlerts(NewPosts);
+  }, []);
+
   useEffect(() => {
     fetchData();
+    fetch공지();
     (async () => {
       setIsAdmin(await waitUntilAdmined());
     })();
@@ -77,9 +86,10 @@ export default function Home() {
           {isAdmin ? (
             <option value="201">건의글 / 관리자에게만 보이기</option>
           ) : null}
+          <option value="300">공지</option>
         </select>
         <InfiniteScroll
-          dataLength={posts.length}
+          dataLength={posts.length + alerts.length}
           next={fetchData}
           hasMore={hasMore}
           loader={
@@ -117,6 +127,19 @@ export default function Home() {
           }
           className={style.posts}
         >
+          {alerts.map((v, i) => {
+            return (
+              <Post
+                id={v.id}
+                title={"[!][공지] " + v.title}
+                desc={v.content}
+                key={i}
+                type={v.type}
+                time={v.time}
+                view={v.view}
+              />
+            );
+          })}
           {posts.map((v, i) => {
             return (
               <Post

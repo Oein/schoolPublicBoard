@@ -44,6 +44,11 @@ export default async function handle(
     },
     where: {
       isShown: true,
+      type: {
+        not: {
+          equals: 300,
+        },
+      },
     },
     select: {
       content: true,

@@ -37,7 +37,7 @@ export default function TagsView(props: Props) {
       </span>
       <span>
         <span className="material-symbols-outlined">sell</span>
-        <span>{tagName[props.postType]}</span>
+        <span>{tagName[props.postType].replace("__", "")}</span>
       </span>
     </>
   );

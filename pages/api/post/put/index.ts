@@ -3,6 +3,7 @@ import prismadb from "@/utils/prisma";
 import kensorship from "kensorship";
 import { uid } from "uid";
 import { getClientIp } from "request-ip";
+import cookieAdmin from "@/utils/isthiscookieadmin";
 
 // Req body
 /*
@@ -43,6 +44,15 @@ export default async function handler(
   tagIncludeds.forEach((i) => (i ? (tagIncluded = true) : null));
   if (tagIncluded) return invalid_body();
 
+  if (title.includes("공지"))
+    return res.status(400).send({
+      e: "`제목은 '공지'를 포함할 수 없습니다.`",
+    });
+
+  if (postType == 300 && !(await cookieAdmin(req.cookies["token"])))
+    return res.send({
+      e: "관리자 인증에 실패하였습니다.",
+    });
   if (kensorship(content).length > 0)
     return res.send({
       e: "Exsist bad words",

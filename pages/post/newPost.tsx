@@ -1,5 +1,5 @@
 import kensorship from "kensorship";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Editor } from "@tinymce/tinymce-react";
 import Header from "@/components/Header";
@@ -7,13 +7,22 @@ import axios from "axios";
 import FullsizeLoading from "@/components/FullSizeLoading";
 import { useRouter } from "next/router";
 import tagName from "@/constants/tagName";
+import { waitUntilAdmined } from "@/utils/amIadmin";
 
 export default function PostView() {
   let [title, setTitle] = useState("");
   let [loading, setLoading] = useState(false);
   let [postType, setType] = useState(100);
+  let [isAdmin, setIsAdmin] = useState(false);
   const editorRef = useRef(null);
   const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      setIsAdmin(await waitUntilAdmined());
+    })();
+  }, []);
+
   return (
     <>
       <FullsizeLoading loading={loading} />
@@ -32,11 +41,15 @@ export default function PostView() {
               value={postType}
               onChange={(e) => setType(parseInt(e.target.value) || 100)}
             >
-              {Object.keys(tagName).map((i: any) => (
-                <option value={i} key={i}>
-                  {tagName[i]}
-                </option>
-              ))}
+              {Object.keys(tagName).map((i: any) => {
+                if (tagName[i].includes("__")) return null;
+                return (
+                  <option value={i} key={i}>
+                    {tagName[i]}
+                  </option>
+                );
+              })}
+              {isAdmin ? <option value={300}>공지</option> : null}
             </select>
             <Editor
               tinymceScriptSrc={"/tinymce/tinymce.min.js"}
@@ -62,6 +75,9 @@ export default function PostView() {
             <div
               className="button"
               onClick={() => {
+                if (title.includes("공지")) {
+                  return toast.error(`제목은 '공지'를 포함할 수 없습니다.`);
+                }
                 let badWords = kensorship(title);
                 if (badWords.length > 0)
                   return toast.error(
