@@ -1,21 +1,23 @@
 import Header from "@/components/Header";
-import style from "@/styles/postView.module.css";
-import { useEffect, useState } from "react";
-import NoSSR from "react-no-ssr";
-import { toast } from "react-toastify";
-
-import axios from "axios";
-
-// ssr
-import prismadb from "@/utils/prisma";
-import { GetServerSideProps } from "next";
+import TagsView from "@/components/tagsView";
 import HTMLRenderer from "@/components/HTML_Renderer";
-import { useRouter } from "next/router";
 import FullsizeLoading from "@/components/FullSizeLoading";
+
+import Chat from "@/pages/chat/[id]";
+
+import style from "@/styles/postView.module.css";
+
+import prismadb from "@/utils/prisma";
 import { waitUntilAdmined } from "@/utils/amIadmin";
 import cookieAdmin from "@/utils/isthiscookieadmin";
+
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import NoSSR from "react-no-ssr";
+import axios from "axios";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import { getClientIp } from "request-ip";
-import TagsView from "@/components/tagsView";
 
 interface Props {
   title: string;
@@ -148,6 +150,7 @@ export default function PostView({
               <HTMLRenderer html={desc} />
 
               {/* 댓글 */}
+              <Chat />
             </NoSSR>
           </div>
         </div>
