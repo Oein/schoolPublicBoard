@@ -25,6 +25,7 @@ export default async function handle(
   let postTypeSelector = req.query.postType;
   let notAdminSelectorAdder: any = {
     where: {
+      isShown: true,
       OR: [
         {
           ip: ip,
@@ -43,7 +44,6 @@ export default async function handle(
       time: "desc",
     },
     where: {
-      isShown: true,
       type: {
         not: {
           equals: 300,
