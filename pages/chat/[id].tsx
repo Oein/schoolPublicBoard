@@ -10,6 +10,8 @@ import NProgress from "nprogress";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PuffLoader } from "react-spinners";
+import FullsizeLoading from "@/components/FullSizeLoading";
+import { waitUntilAdmined } from "@/utils/amIadmin";
 
 interface Message {
   isFromme: boolean;
@@ -25,6 +27,9 @@ export default function Chat() {
   let [content, setContent] = useState("");
   let [connected, setConnected] = useState(false);
   let [hasMore, setHasMore] = useState(true);
+  let [myChats, setMyChats] = useState<string[]>([]);
+  let [loading, setLoading] = useState(false);
+  let [amIadmin, setAmIadmin] = useState(false);
 
   const router = useRouter();
 
@@ -42,12 +47,13 @@ export default function Chat() {
         let datas = res.data as {
           content: string;
           id: string;
+          isFromMe: boolean;
         }[];
         setMessages((g) => [
           ...g,
           ...datas.map((i): Message => {
             return {
-              isFromme: Math.random() > 0.5,
+              isFromme: i.isFromMe,
               message: i.content,
               id: i.id,
             };
@@ -61,6 +67,7 @@ export default function Chat() {
     });
   }, [hasMore, router.isReady]);
 
+  // socketio listener
   useEffect(() => {
     socket.once("connect", () => {
       socket.emit("join::room", router.query.id);
@@ -74,10 +81,14 @@ export default function Chat() {
       setConnected(false);
     });
 
+    socket.on("yourchat", (e) => {
+      setMyChats((i) => [...i, e]);
+    });
+
     socket.on("chat", (data) => {
       setMessages((g) => [
         {
-          isFromme: Math.random() > 0.5,
+          isFromme: false,
           message: data.d,
           id: data.i,
         },
@@ -86,17 +97,30 @@ export default function Chat() {
       console.log("chat", data);
     });
 
+    socket.on("delChat", (data) => {
+      setMessages((x) => x.filter((i) => i.id != data));
+    });
+
     if (!socket.connected) socket.connect();
   }, []);
 
+  // fetch chat data
   useEffect(() => {
     fetchData();
     if (!socket.connected) socket.connect();
   }, [fetchData]);
 
+  // connect on disconnect
   useEffect(() => {
     if (!socket.connected) socket.connect();
   });
+
+  // am i admin
+  useEffect(() => {
+    (async () => {
+      setAmIadmin(await waitUntilAdmined());
+    })();
+  }, []);
 
   const send = () => {
     if (connected == false) return;
@@ -114,6 +138,7 @@ export default function Chat() {
 
   return (
     <div>
+      <FullsizeLoading loading={loading} />
       <div
         className="container"
         style={{
@@ -249,27 +274,82 @@ export default function Chat() {
                 }}
               >
                 {messages.map((message, i) => {
-                  if (message.isFromme) {
-                    if (messages.length > i + 1 && messages[i].isFromme)
-                      return (
-                        <p key={i} className="from-me no-tail">
-                          {message.message}
-                        </p>
-                      );
+                  if (
+                    message.isFromme ||
+                    myChats.includes(message.id) ||
+                    amIadmin
+                  ) {
                     return (
-                      <p key={i} className="from-me">
+                      <p
+                        key={i}
+                        className={`from-me ${
+                          messages.length > i + 1 && messages[i].isFromme
+                            ? "no-tail"
+                            : ""
+                        }`}
+                        id={message.id}
+                      >
                         {message.message}
+                        <p
+                          onClick={() => {
+                            let conf =
+                              confirm("삭제합니까? 되돌릴 수 없습니다.");
+
+                            if (!conf) return;
+                            NProgress.start();
+                            setLoading(true);
+                            axios
+                              .get(
+                                `/api/admin/manage/chat/delete?chatId=${message.id}`
+                              )
+                              .then((v) => {
+                                let { data } = v;
+                                if (data.e) toast.error(data.e);
+                                else if (data.s) {
+                                  toast.success("성공적으로 삭제했습니다.");
+                                }
+                                socket.emit("delChat", message.id);
+                              })
+                              .catch((e) => {
+                                console.error(e);
+                                toast.error(e.toString());
+                              })
+                              .finally(() => {
+                                NProgress.done();
+                                setLoading(false);
+                              });
+                          }}
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px",
+                            padding: "0px",
+                          }}
+                          className="tags"
+                        >
+                          <span
+                            style={{
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            <span className="material-symbols-outlined iconvm">
+                              delete
+                            </span>
+                            <span>삭제</span>
+                          </span>
+                        </p>
                       </p>
                     );
                   }
-                  if (messages.length > i + 1 && !messages[i].isFromme)
-                    return (
-                      <p key={i} className="from-them no-tail">
-                        {message.message}
-                      </p>
-                    );
                   return (
-                    <p className="from-them" key={i}>
+                    <p
+                      key={i}
+                      className={`from-them ${
+                        messages.length > i + 1 && !messages[i].isFromme
+                          ? "no-tail"
+                          : ""
+                      }`}
+                      id={message.id}
+                    >
                       {message.message}
                     </p>
                   );

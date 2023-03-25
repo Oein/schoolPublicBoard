@@ -9,10 +9,7 @@ export default async function handler(
 ) {
   const checkAdmined = async () => {
     let cok = req.cookies["token"];
-    if (typeof cok !== "string")
-      return res.send({
-        e: "관리자 인증에 실패하였습니다.",
-      });
+    if (typeof cok !== "string") return false;
     let cn = await prismadb.keyVal.count({
       where: {
         key: "admin",
@@ -71,6 +68,36 @@ export default async function handler(
       if (postIp == null) return invalid_d();
       if (getClientIp(req) == postIp.ip || (await checkAdmined())) {
         await prismadb.post.update({
+          where: {
+            id: postId,
+          },
+          data: {
+            isShown: false,
+          },
+        });
+        return res.send({
+          s: true,
+        });
+      }
+      return res.send({
+        e: "관리자 인증에 실패하였습니다.",
+      });
+    },
+    "chat/delete": async () => {
+      let postId = req.query.chatId;
+      if (typeof postId !== "string") return invalid_d();
+
+      let postIp = await prismadb.chat.findFirst({
+        where: {
+          id: postId,
+        },
+        select: {
+          ip: true,
+        },
+      });
+      if (postIp == null) return invalid_d();
+      if (getClientIp(req) == postIp.ip || (await checkAdmined())) {
+        await prismadb.chat.update({
           where: {
             id: postId,
           },

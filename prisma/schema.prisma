@@ -27,6 +27,7 @@ model Chat {
   content String
   belongsTo String
   ip String
+  isShown Boolean @default(true)
 }
 
 model KeyVal {
