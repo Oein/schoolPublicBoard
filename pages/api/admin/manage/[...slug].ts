@@ -70,14 +70,12 @@ export default async function handler(
       });
       if (postIp == null) return invalid_d();
       if (getClientIp(req) == postIp.ip || (await checkAdmined())) {
-        await prismadb.post.delete({
+        await prismadb.post.update({
           where: {
             id: postId,
           },
-        });
-        await prismadb.chat.deleteMany({
-          where: {
-            belongsTo: postId,
+          data: {
+            isShown: false,
           },
         });
         return res.send({

@@ -176,6 +176,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       title: true,
       view: true,
       type: true,
+      isShown: true,
     },
   });
   if (!datas) {
@@ -183,6 +184,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       notFound: true,
     };
   }
+  if (datas.isShown == false)
+    if (!(await cookieAdmin(context.req.cookies["token"])))
+      return {
+        notFound: true,
+      };
   await prismadb.post.update({
     where: {
       id: parms.id,
