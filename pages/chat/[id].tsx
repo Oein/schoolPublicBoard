@@ -136,7 +136,32 @@ export default function Chat() {
           >
             댓글
           </p>
-          {!connected ? <div>서버에 연결중...</div> : null}
+          {!connected ? (
+            <div>
+              <p
+                style={{
+                  margin: "0px",
+                  padding: "0px",
+                }}
+              >
+                서버에 연결중...
+              </p>
+              <p
+                style={{
+                  fontSize: "0.7em",
+                  margin: "0px",
+                  padding: "0px",
+                  cursor: "pointer",
+                  paddingLeft: "15px",
+                }}
+                onClick={() => {
+                  if (socket.disconnected) socket.connect();
+                }}
+              >
+                자동으로 연결이 되지 않는 경우, 눌러주세요.
+              </p>
+            </div>
+          ) : null}
           <div className={style.submitContainer}>
             <div className={style.ccontainer}>
               <div className={style.inputContainer}>
