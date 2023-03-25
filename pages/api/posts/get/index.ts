@@ -57,6 +57,7 @@ export default async function handle(
       view: true,
       type: true,
       time: true,
+      isShown: true,
     },
   };
   if (typeof postTypeSelector === "string")

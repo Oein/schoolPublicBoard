@@ -17,6 +17,7 @@ interface Posts {
   type: number;
   time: number;
   view: number;
+  isShown: boolean;
 }
 
 export default function Home() {
@@ -137,6 +138,7 @@ export default function Home() {
                 type={v.type}
                 time={v.time}
                 view={v.view}
+                deleted={false}
               />
             );
           })}
@@ -150,6 +152,7 @@ export default function Home() {
                 type={v.type}
                 time={v.time}
                 view={v.view}
+                deleted={!v.isShown}
               />
             );
           })}

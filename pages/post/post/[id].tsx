@@ -27,6 +27,7 @@ interface Props {
   ip: string | undefined;
   isMe: boolean;
   type: number;
+  shown: boolean;
 }
 
 export default function PostView({
@@ -37,6 +38,7 @@ export default function PostView({
   ip,
   isMe,
   type: postType,
+  shown,
 }: Props) {
   let [loading, setLoading] = useState(false);
   let [amIadmin, setAmIadmin] = useState(false);
@@ -71,6 +73,15 @@ export default function PostView({
                   fontWeight: "bolder",
                 }}
               >
+                {!shown ? (
+                  <span
+                    style={{
+                      color: "lightcoral",
+                    }}
+                  >
+                    [삭제됨]
+                  </span>
+                ) : null}
                 {title}
               </h1>
 
@@ -210,6 +221,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         : "Unknown",
       isMe: getClientIp(context.req) === datas.ip,
       type: datas.type,
+      shown: datas.isShown,
     },
   };
 };

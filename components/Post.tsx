@@ -10,6 +10,7 @@ interface PostProps {
   type: number;
   time: number;
   view: number;
+  deleted: boolean;
 }
 
 export default function Post(props: PostProps) {
@@ -27,7 +28,18 @@ export default function Post(props: PostProps) {
       >
         <tr>
           <td valign="top">
-            <h1 className={style.title}>{props.title}</h1>
+            <h1 className={style.title}>
+              {props.deleted ? (
+                <span
+                  style={{
+                    color: "lightcoral",
+                  }}
+                >
+                  [삭제됨]
+                </span>
+              ) : null}
+              {props.title}
+            </h1>
             <desc className={style.desc}>{props.desc}</desc>
           </td>
         </tr>
