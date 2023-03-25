@@ -155,7 +155,7 @@ export default function Chat() {
                   paddingLeft: "15px",
                 }}
                 onClick={() => {
-                  if (socket.disconnected) socket.connect();
+                  socket.connect();
                 }}
               >
                 자동으로 연결이 되지 않는 경우, 눌러주세요.
