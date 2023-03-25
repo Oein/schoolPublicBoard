@@ -155,7 +155,7 @@ export default function Chat() {
                   paddingLeft: "15px",
                 }}
                 onClick={() => {
-                  socket.connect();
+                  router.reload();
                 }}
               >
                 자동으로 연결이 되지 않는 경우, 눌러주세요.
