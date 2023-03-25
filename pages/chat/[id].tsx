@@ -91,7 +91,12 @@ export default function Chat() {
 
   useEffect(() => {
     fetchData();
+    if (!socket.connected) socket.connect();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (!socket.connected) socket.connect();
+  });
 
   const send = () => {
     if (connected == false) return;
