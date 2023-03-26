@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
 import { getClientIp } from "request-ip";
+import cookieAdmin from "@/utils/isthiscookieadmin";
 
 export default async function handle(
   req: NextApiRequest,
@@ -9,13 +10,12 @@ export default async function handle(
   let page = req.query.afterID;
   let post = req.query.post;
   let userip = getClientIp(req) || "Unknown";
+  let isAdmin = await cookieAdmin(req.cookies["token"]);
 
   if (typeof post !== "string")
     return res.send({
       e: "Invalid query",
     });
-
-  console.log(post);
 
   let qr = {
     ...{
@@ -29,10 +29,10 @@ export default async function handle(
         content: true,
         id: true,
         ip: true,
+        isShown: isAdmin,
       },
       where: {
         belongsTo: post,
-        isShown: true,
       },
     },
     ...(page
@@ -43,20 +43,26 @@ export default async function handle(
           skip: 1,
         }
       : {}),
+    ...(!isAdmin
+      ? {
+          where: {
+            belongsTo: post,
+            isShown: true,
+          },
+        }
+      : {}),
   };
 
-  console.log(qr);
+  let outdt = (await prismadb.chat.findMany(qr as any)).map((i) => {
+    let rt: { [key: string]: any } = {
+      content: i.content,
+      id: i.id,
+      isFromMe: i.ip == userip,
+      isShown: false,
+    };
+    if (i.isShown) rt["isShown"] = i.isShown;
+    return rt;
+  });
 
-  res.send(
-    (await prismadb.chat.findMany(qr as any)).map((i) => {
-      console.log(userip, i.ip);
-      return {
-        time: i.time,
-        belongsTo: i.belongsTo,
-        content: i.content,
-        id: i.id,
-        isFromMe: i.ip == userip,
-      };
-    })
-  );
+  res.send(outdt);
 }

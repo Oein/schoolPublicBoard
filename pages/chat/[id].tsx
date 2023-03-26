@@ -17,6 +17,7 @@ interface Message {
   isFromme: boolean;
   message: string;
   id: string;
+  isShown?: boolean;
 }
 
 const socket = socketIO(process.env.NEXT_PUBLIC_BACKEND as string, {
@@ -49,6 +50,7 @@ export default function Chat() {
           content: string;
           id: string;
           isFromMe: boolean;
+          isShown?: boolean;
         }[];
         setMessages((g) => [
           ...g,
@@ -57,6 +59,7 @@ export default function Chat() {
               isFromme: i.isFromMe,
               message: i.content,
               id: i.id,
+              isShown: i.isShown,
             };
           }),
         ]);
@@ -95,7 +98,6 @@ export default function Chat() {
         },
         ...g,
       ]);
-      console.log("chat", data);
     });
 
     socket.on("delChat", (data) => {
@@ -132,7 +134,6 @@ export default function Chat() {
         `비속어 "${badWords[0].badword}"이(가) 포함되있습니다.`
       );
 
-    console.log(content);
     socket.emit("chat", content);
     setContent("");
   };
@@ -275,6 +276,11 @@ export default function Chat() {
                 }}
               >
                 {messages.map((message, i) => {
+                  let isDeleted =
+                    amIadmin &&
+                    typeof message.isShown === "boolean" &&
+                    message.isShown == false;
+
                   if (
                     message.isFromme ||
                     myChats.includes(message.id) ||
@@ -290,6 +296,20 @@ export default function Chat() {
                         }`}
                         id={message.id}
                       >
+                        {isDeleted ? (
+                          <span
+                            style={{
+                              color: "lightcoral",
+                              background: "white",
+                              borderRadius: "5px",
+                              padding: "2px",
+                              marginRight: "3px",
+                            }}
+                          >
+                            [삭제됨]
+                          </span>
+                        ) : null}
+
                         {message.message}
                         <p
                           onClick={() => {
@@ -308,8 +328,8 @@ export default function Chat() {
                                 if (data.e) toast.error(data.e);
                                 else if (data.s) {
                                   toast.success("성공적으로 삭제했습니다.");
+                                  socket.emit("delChat", message.id);
                                 }
-                                socket.emit("delChat", message.id);
                               })
                               .catch((e) => {
                                 console.error(e);
@@ -335,7 +355,7 @@ export default function Chat() {
                             <span className="material-symbols-outlined iconvm">
                               delete
                             </span>
-                            <span>삭제</span>
+                            <span>{amIadmin ? "완전 " : ""}삭제</span>
                           </span>
                         </p>
                       </p>
@@ -351,6 +371,19 @@ export default function Chat() {
                       }`}
                       id={message.id}
                     >
+                      {isDeleted ? (
+                        <span
+                          style={{
+                            color: "lightcoral",
+                            background: "white",
+                            borderRadius: "5px",
+                            padding: "2px",
+                            marginRight: "3px",
+                          }}
+                        >
+                          [삭제됨]
+                        </span>
+                      ) : null}
                       {message.message}
                     </p>
                   );

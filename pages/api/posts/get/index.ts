@@ -46,7 +46,7 @@ export default async function handle(
     where: {
       type: {
         not: {
-          equals: 300,
+          in: [300, 500],
         },
       },
     },
@@ -130,12 +130,6 @@ export default async function handle(
       })
     );
 
-  console.log(
-    JSON.stringify({
-      ...adminSelector,
-      ...notAdminSelectorAdder,
-    })
-  );
   return res.status(200).send(
     (
       await prismadb.post.findMany({

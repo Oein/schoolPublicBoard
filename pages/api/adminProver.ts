@@ -18,14 +18,23 @@ export default async function handler(
       e: "잘못된 비밀번호 입니다.",
     });
   let u = uid(256);
-  await prismadb.keyVal.update({
-    where: {
-      key: "admin",
-    },
-    data: {
-      val: u,
-    },
-  });
+  try {
+    await prismadb.keyVal.update({
+      where: {
+        key: "admin",
+      },
+      data: {
+        val: u,
+      },
+    });
+  } catch (e) {
+    await prismadb.keyVal.create({
+      data: {
+        key: "admin",
+        val: u,
+      },
+    });
+  }
   res.setHeader(
     "Set-Cookie",
     serialize("token", u, {

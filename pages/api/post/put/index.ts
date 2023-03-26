@@ -28,7 +28,6 @@ export default async function handler(
       e: "요청이 잘못되었습니다.",
     });
   };
-  console.log(postType, title, content);
   if (typeof content !== "string") return invalid_body();
   if (typeof title !== "string") return invalid_body();
   if (typeof ip !== "string") return invalid_body();
