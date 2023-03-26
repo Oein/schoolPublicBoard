@@ -1,1 +1,101 @@
-if(!self.define){let e,i={};const n=(n,s)=>(n=new URL(n+".js",s).href,i[n]||new Promise((i=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=i,document.head.appendChild(e)}else e=n,importScripts(n),i()})).then((()=>{let e=i[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e})));self.define=(s,c)=>{const a=e||("document"in self?document.currentScript.src:"")||location.href;if(i[a])return;let t={};const r=e=>n(e,a),d={module:{uri:a},exports:t,require:r};i[a]=Promise.all(s.map((e=>d[e]||r(e)))).then((e=>(c(...e),t)))}}define(["./workbox-588899ac"],(function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/_next/static/chunks/249.5ec9e62df29169ab.js",revision:"5ec9e62df29169ab"},{url:"/_next/static/chunks/339-dfa03720e5b7b324.js",revision:"dfa03720e5b7b324"},{url:"/_next/static/chunks/38-2344609e98c71dea.js",revision:"2344609e98c71dea"},{url:"/_next/static/chunks/411-41592ccffc6a8339.js",revision:"41592ccffc6a8339"},{url:"/_next/static/chunks/698.16ba223dac9a3b3e.js",revision:"16ba223dac9a3b3e"},{url:"/_next/static/chunks/996-c5ac8e547f0dfbd2.js",revision:"c5ac8e547f0dfbd2"},{url:"/_next/static/chunks/framework-2c79e2a64abdb08b.js",revision:"2c79e2a64abdb08b"},{url:"/_next/static/chunks/main-631b6b5040511d24.js",revision:"631b6b5040511d24"},{url:"/_next/static/chunks/pages/_app-c25a244734c56eda.js",revision:"c25a244734c56eda"},{url:"/_next/static/chunks/pages/_error-aa5a825a6e4a22c3.js",revision:"aa5a825a6e4a22c3"},{url:"/_next/static/chunks/pages/adminProve-47ff20305a683d19.js",revision:"47ff20305a683d19"},{url:"/_next/static/chunks/pages/chat/%5Bid%5D-93be0df8e535f713.js",revision:"93be0df8e535f713"},{url:"/_next/static/chunks/pages/index-3765005ef14141c5.js",revision:"3765005ef14141c5"},{url:"/_next/static/chunks/pages/post-ae64cc190bf412a7.js",revision:"ae64cc190bf412a7"},{url:"/_next/static/chunks/pages/post/newPost-08a87b29f8da53c7.js",revision:"08a87b29f8da53c7"},{url:"/_next/static/chunks/pages/post/post/%5Bid%5D-7053192091c19110.js",revision:"7053192091c19110"},{url:"/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js",revision:"837c0df77fd5009c9e46d446188ecfd0"},{url:"/_next/static/chunks/webpack-abb09d2adf7370a7.js",revision:"abb09d2adf7370a7"},{url:"/_next/static/css/09b205874e461663.css",revision:"09b205874e461663"},{url:"/_next/static/css/365239e7a2c99b5c.css",revision:"365239e7a2c99b5c"},{url:"/_next/static/css/432b864de132b1be.css",revision:"432b864de132b1be"},{url:"/_next/static/css/7e22d9febdfb6646.css",revision:"7e22d9febdfb6646"},{url:"/_next/static/css/a1956a9cf957c8d8.css",revision:"a1956a9cf957c8d8"},{url:"/_next/static/vdKUnB0oFEZ2LIXfzYMDX/_buildManifest.js",revision:"fedb0fd3258dd9958225ee7d0f98113c"},{url:"/_next/static/vdKUnB0oFEZ2LIXfzYMDX/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/manifest.json",revision:"f253cd42b67a6d351001bdc1f737b946"},{url:"/next.svg",revision:"8e061864f388b47f33a1c3780831193e"},{url:"/pwa/android-icon-144x144.png",revision:"29bbebc6769b114a6004b16e7b1d92bc"},{url:"/pwa/android-icon-192x192.png",revision:"74f53135acf7ace85ea89ffa16b136da"},{url:"/pwa/android-icon-36x36.png",revision:"555a01973a3c6c61d18ce94a1bd1b09e"},{url:"/pwa/android-icon-48x48.png",revision:"a3ffd27198f7ba987b80063f5c11b5e7"},{url:"/pwa/android-icon-72x72.png",revision:"ccd2e5007bab5718e974344f40137e0d"},{url:"/pwa/android-icon-96x96.png",revision:"dba123d20c1e8fb158f57ea9a25f5163"},{url:"/pwa/apple-icon-114x114.png",revision:"2c1232f116c9c779d26a3374a7732b66"},{url:"/pwa/apple-icon-120x120.png",revision:"560fb30907cc24ffc0f6837ab22e4e7f"},{url:"/pwa/apple-icon-144x144.png",revision:"29bbebc6769b114a6004b16e7b1d92bc"},{url:"/pwa/apple-icon-152x152.png",revision:"d08032a1cb5618aa00f84b162342b412"},{url:"/pwa/apple-icon-180x180.png",revision:"c1db008298d031599db19ef5fb6f9022"},{url:"/pwa/apple-icon-57x57.png",revision:"12b318bc56ac9c5c4215f00a89b81d3f"},{url:"/pwa/apple-icon-60x60.png",revision:"c94f39de704eb3b86e11ea1f2b061796"},{url:"/pwa/apple-icon-72x72.png",revision:"1085c02124fb301e18de6eee37e857d5"},{url:"/pwa/apple-icon-76x76.png",revision:"811f43219c7fc21cce9ed0e899108de3"},{url:"/pwa/apple-icon-precomposed.png",revision:"ff24e966152e0be01e920d4a422a1d5e"},{url:"/pwa/apple-icon.png",revision:"ff24e966152e0be01e920d4a422a1d5e"},{url:"/pwa/browserconfig.xml",revision:"653d077300a12f09a69caeea7a8947f8"},{url:"/pwa/favicon-16x16.png",revision:"6f2ea259f830a3a5784fc388931ff020"},{url:"/pwa/favicon-32x32.png",revision:"e72a9c36081bd9248eb207180e83f2f9"},{url:"/pwa/favicon-96x96.png",revision:"dba123d20c1e8fb158f57ea9a25f5163"},{url:"/pwa/favicon.ico",revision:"4d125e093073377500cf7edb420fd7b6"},{url:"/pwa/ms-icon-144x144.png",revision:"29bbebc6769b114a6004b16e7b1d92bc"},{url:"/pwa/ms-icon-150x150.png",revision:"5f7a0f96dcfc8ee00012e9fe00f88184"},{url:"/pwa/ms-icon-310x310.png",revision:"db533a1bf0607a5b3ea10dfcb67ecc36"},{url:"/pwa/ms-icon-70x70.png",revision:"91fc893a9d23ffa616738e1853f90404"},{url:"/s_visual.png",revision:"f1945730be67c3bbcfaff16889d3cd6a"},{url:"/thirteen.svg",revision:"53f96b8290673ef9d2895908e69b2f92"},{url:"/tinymce/icons/default/icons.min.js",revision:"9836b70e10e40ab80e87ba2e3ee6dd6c"},{url:"/tinymce/langs/README.md",revision:"a803b8446c1cdbaa1984d49b92bb8001"},{url:"/tinymce/license.txt",revision:"5f3d874e2822450a6077fe87dd8c9297"},{url:"/tinymce/models/dom/model.min.js",revision:"89e59340bd2acfaf6631ecb5abaaad8b"},{url:"/tinymce/plugins/advlist/plugin.min.js",revision:"f6f8d98b121c7ac8a01b42844ae9d147"},{url:"/tinymce/plugins/anchor/plugin.min.js",revision:"b89c9c521e3928efcddb631f39b8ed9a"},{url:"/tinymce/plugins/autolink/plugin.min.js",revision:"933b866049a01cb997207843281f233e"},{url:"/tinymce/plugins/autoresize/plugin.min.js",revision:"bf8cab7eb02aace80c0062eb79cc1c96"},{url:"/tinymce/plugins/autosave/plugin.min.js",revision:"34c2517c6dd8d37145b7152bc74e076d"},{url:"/tinymce/plugins/charmap/plugin.min.js",revision:"86be8f0427cb04680fb6b54f981a616e"},{url:"/tinymce/plugins/code/plugin.min.js",revision:"cd5c78392259dc6dc9c4f4ee93888909"},{url:"/tinymce/plugins/codesample/plugin.min.js",revision:"a6000c204e8a67e56fa39263a8e2dbe9"},{url:"/tinymce/plugins/directionality/plugin.min.js",revision:"4959802ffaab3b76b1597ad3ead43e38"},{url:"/tinymce/plugins/emoticons/js/emojiimages.js",revision:"1ab2fd097df3919a141b411bb0b053b8"},{url:"/tinymce/plugins/emoticons/js/emojiimages.min.js",revision:"d3b2eef2f78cde4a29db5afc18223611"},{url:"/tinymce/plugins/emoticons/js/emojis.js",revision:"7fa1cc8fdcb750daad96da33821c5263"},{url:"/tinymce/plugins/emoticons/js/emojis.min.js",revision:"74f5f8072608c3281eede313c2234f6a"},{url:"/tinymce/plugins/emoticons/plugin.min.js",revision:"dabac4eab2bbbe3814e52e822bfc9480"},{url:"/tinymce/plugins/fullscreen/plugin.min.js",revision:"887bc7ac287ab1415a7d987529dbabd9"},{url:"/tinymce/plugins/help/plugin.min.js",revision:"a5b717fdbf81e0c47a0fb57ae21e18a7"},{url:"/tinymce/plugins/image/plugin.min.js",revision:"149dad765ba27e178acc5f43d2028f32"},{url:"/tinymce/plugins/importcss/plugin.min.js",revision:"dfb5dd154efe02e8743fa82ef98f3069"},{url:"/tinymce/plugins/insertdatetime/plugin.min.js",revision:"098b3cbf38402cf932247f4d67469e5c"},{url:"/tinymce/plugins/link/plugin.min.js",revision:"62a9a8ef0324f41b63fc9b6f255309f3"},{url:"/tinymce/plugins/lists/plugin.min.js",revision:"3dee3da5d200b70c3a9de4052acb616a"},{url:"/tinymce/plugins/media/plugin.min.js",revision:"91b809732dbd206874a974f072463b74"},{url:"/tinymce/plugins/nonbreaking/plugin.min.js",revision:"815d45bd71b4e6894ade07d06041da7d"},{url:"/tinymce/plugins/pagebreak/plugin.min.js",revision:"1cb0cf3fc13f70115619ccca2a5845e8"},{url:"/tinymce/plugins/preview/plugin.min.js",revision:"c0bad39f452f1e587b3beba9841b08b9"},{url:"/tinymce/plugins/quickbars/plugin.min.js",revision:"d1156665d1efb9c0eb43f5dc6f90f01c"},{url:"/tinymce/plugins/save/plugin.min.js",revision:"1076571aa5ab592a9ed5c931ca5d58ff"},{url:"/tinymce/plugins/searchreplace/plugin.min.js",revision:"3d18d2280c8769d2f3bca5f04632898f"},{url:"/tinymce/plugins/table/plugin.min.js",revision:"941f1e09f7405c94bd7d1067c348f61d"},{url:"/tinymce/plugins/template/plugin.min.js",revision:"55ee498c2e69780313496b420b58fe5a"},{url:"/tinymce/plugins/visualblocks/plugin.min.js",revision:"519944469c01877b8ab6241bc2c6cff0"},{url:"/tinymce/plugins/visualchars/plugin.min.js",revision:"f5193c6ed2fcb97c81d219deb944cbfc"},{url:"/tinymce/plugins/wordcount/plugin.min.js",revision:"8b5bb28bdeda3207bd5250e7e9b39485"},{url:"/tinymce/skins/content/dark/content.min.css",revision:"8be098c8a09616b6f37f8ed7c963ebca"},{url:"/tinymce/skins/content/default/content.min.css",revision:"e7448307845064b6e567dabdf0edd81a"},{url:"/tinymce/skins/content/document/content.min.css",revision:"6cb27dc9ba941235eb2b074c9cbf7126"},{url:"/tinymce/skins/content/tinymce-5-dark/content.min.css",revision:"4e7d595a3352a317ac5457e1544dd018"},{url:"/tinymce/skins/content/tinymce-5/content.min.css",revision:"e7448307845064b6e567dabdf0edd81a"},{url:"/tinymce/skins/content/writer/content.min.css",revision:"5647767d1db4e7cbfe47ab7510c8aeea"},{url:"/tinymce/skins/ui/oxide-dark/content.inline.min.css",revision:"c65d8a8feae725b0492453c62cc95025"},{url:"/tinymce/skins/ui/oxide-dark/content.min.css",revision:"9ae20a97118207117047c27bd3336a09"},{url:"/tinymce/skins/ui/oxide-dark/skin.min.css",revision:"dbcc73d3af70e83302cfaa221acf3b39"},{url:"/tinymce/skins/ui/oxide-dark/skin.shadowdom.min.css",revision:"1448b0502cbc52a71d7b2a5eaa9f3847"},{url:"/tinymce/skins/ui/oxide/content.inline.min.css",revision:"c65d8a8feae725b0492453c62cc95025"},{url:"/tinymce/skins/ui/oxide/content.min.css",revision:"316de7f3cab5bcec1225cd56d14083f2"},{url:"/tinymce/skins/ui/oxide/skin.min.css",revision:"8bf29ce7a4eed5fce9e4c100b1b7e99d"},{url:"/tinymce/skins/ui/oxide/skin.shadowdom.min.css",revision:"1448b0502cbc52a71d7b2a5eaa9f3847"},{url:"/tinymce/skins/ui/tinymce-5-dark/content.inline.min.css",revision:"c65d8a8feae725b0492453c62cc95025"},{url:"/tinymce/skins/ui/tinymce-5-dark/content.min.css",revision:"9ae20a97118207117047c27bd3336a09"},{url:"/tinymce/skins/ui/tinymce-5-dark/skin.min.css",revision:"c890372adaac114be95d084b5ad55ddc"},{url:"/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css",revision:"1448b0502cbc52a71d7b2a5eaa9f3847"},{url:"/tinymce/skins/ui/tinymce-5/content.inline.min.css",revision:"c65d8a8feae725b0492453c62cc95025"},{url:"/tinymce/skins/ui/tinymce-5/content.min.css",revision:"316de7f3cab5bcec1225cd56d14083f2"},{url:"/tinymce/skins/ui/tinymce-5/skin.min.css",revision:"7ffeac44fc776946e7d36b6454823bd2"},{url:"/tinymce/skins/ui/tinymce-5/skin.shadowdom.min.css",revision:"1448b0502cbc52a71d7b2a5eaa9f3847"},{url:"/tinymce/themes/silver/theme.min.js",revision:"a908f57e35a19b615afe5d1bc0c9afd5"},{url:"/tinymce/tinymce.d.ts",revision:"b1406a9d042dc59fc238ac0b2e171cef"},{url:"/tinymce/tinymce.min.js",revision:"898457637309405d6c2f6e7ffdec087f"},{url:"/vercel.svg",revision:"61c6b19abff40ea7acd577be818f3976"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:i,event:n,state:s})=>i&&"opaqueredirect"===i.type?new Response(i.body,{status:200,statusText:"OK",headers:i.headers}):i}]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-webfonts",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,new e.StaleWhileRevalidate({cacheName:"google-fonts-stylesheets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,new e.StaleWhileRevalidate({cacheName:"static-font-assets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,new e.StaleWhileRevalidate({cacheName:"static-image-assets",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/image\?url=.+$/i,new e.StaleWhileRevalidate({cacheName:"next-image",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp3|wav|ogg)$/i,new e.CacheFirst({cacheName:"static-audio-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp4)$/i,new e.CacheFirst({cacheName:"static-video-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:js)$/i,new e.StaleWhileRevalidate({cacheName:"static-js-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:css|less)$/i,new e.StaleWhileRevalidate({cacheName:"static-style-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/data\/.+\/.+\.json$/i,new e.StaleWhileRevalidate({cacheName:"next-data",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:json|xml|csv)$/i,new e.NetworkFirst({cacheName:"static-data-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;const i=e.pathname;return!i.startsWith("/api/auth/")&&!!i.startsWith("/api/")}),new e.NetworkFirst({cacheName:"apis",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:16,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;return!e.pathname.startsWith("/api/")}),new e.NetworkFirst({cacheName:"others",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>!(self.origin===e.origin)),new e.NetworkFirst({cacheName:"cross-origin",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:3600})]}),"GET")}));
+/**
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// If the loader is already loaded, just stop.
+if (!self.define) {
+  let registry = {};
+
+  // Used for `eval` and `importScripts` where we can't get script URL by other means.
+  // In both cases, it's safe to use a global var because those functions are synchronous.
+  let nextDefineUri;
+
+  const singleRequire = (uri, parentUri) => {
+    uri = new URL(uri + ".js", parentUri).href;
+    return registry[uri] || (
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
+      .then(() => {
+        let promise = registry[uri];
+        if (!promise) {
+          throw new Error(`Module ${uri} didn’t register its module`);
+        }
+        return promise;
+      })
+    );
+  };
+
+  self.define = (depsNames, factory) => {
+    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
+    if (registry[uri]) {
+      // Module is already loading or loaded.
+      return;
+    }
+    let exports = {};
+    const require = depUri => singleRequire(depUri, uri);
+    const specialDeps = {
+      module: { uri },
+      exports,
+      require
+    };
+    registry[uri] = Promise.all(depsNames.map(
+      depName => specialDeps[depName] || require(depName)
+    )).then(deps => {
+      factory(...deps);
+      return exports;
+    });
+  };
+}
+define(['./workbox-327c579b'], (function (workbox) { 'use strict';
+
+  importScripts();
+  self.skipWaiting();
+  workbox.clientsClaim();
+  workbox.registerRoute("/", new workbox.NetworkFirst({
+    "cacheName": "start-url",
+    plugins: [{
+      cacheWillUpdate: async ({
+        request,
+        response,
+        event,
+        state
+      }) => {
+        if (response && response.type === 'opaqueredirect') {
+          return new Response(response.body, {
+            status: 200,
+            statusText: 'OK',
+            headers: response.headers
+          });
+        }
+        return response;
+      }
+    }]
+  }), 'GET');
+  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
+    "cacheName": "dev",
+    plugins: []
+  }), 'GET');
+
+}));
+//# sourceMappingURL=sw.js.map

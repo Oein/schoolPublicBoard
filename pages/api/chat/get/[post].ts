@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from "@/utils/prisma";
 import { getClientIp } from "request-ip";
-import cookieAdmin from "@/utils/isthiscookieadmin";
 
 export default async function handle(
   req: NextApiRequest,
