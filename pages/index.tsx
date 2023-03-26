@@ -26,9 +26,8 @@ export default function Index() {
               router.push("/post");
             }}
           >
-            학급 게시판 가기
+            익명 게시판 및 익명 상담
           </div>
-          <div className="button">익명 상담하기 (는 만들고 있습니다)</div>
           <div
             className="button"
             onClick={() => {

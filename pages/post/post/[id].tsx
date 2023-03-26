@@ -126,7 +126,19 @@ export default function PostView({
                       }}
                     >
                       <span className="material-symbols-outlined">delete</span>
-                      <span>글 삭제</span>
+                      <span>
+                        글{" "}
+                        {amIadmin ? (
+                          <span
+                            style={{
+                              color: "lightcoral",
+                            }}
+                          >
+                            완전
+                          </span>
+                        ) : null}{" "}
+                        삭제
+                      </span>
                     </span>
                   </>
                 ) : null}

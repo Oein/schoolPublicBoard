@@ -65,7 +65,17 @@ export default async function handler(
         },
       });
       if (postIp == null) return invalid_d();
-      if (getClientIp(req) == postIp.ip || (await checkAdmined())) {
+      if (await checkAdmined()) {
+        await prismadb.post.delete({
+          where: {
+            id: postId,
+          },
+        });
+        return res.send({
+          s: true,
+        });
+      }
+      if (getClientIp(req) == postIp.ip) {
         await prismadb.post.update({
           where: {
             id: postId,

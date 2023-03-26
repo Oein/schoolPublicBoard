@@ -84,9 +84,7 @@ export default function Home() {
             <option value="101">일반글 / 관리자에게만 보이기</option>
           ) : null}
           <option value="200">건의글 / 모두에게 보이기</option>
-          {isAdmin ? (
-            <option value="201">건의글 / 관리자에게만 보이기</option>
-          ) : null}
+          <option value="201">상담글 / 관리자에게만 보이기</option>
           <option value="300">공지</option>
         </select>
         <InfiniteScroll

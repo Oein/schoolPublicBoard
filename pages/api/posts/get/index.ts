@@ -25,15 +25,24 @@ export default async function handle(
   let postTypeSelector = req.query.postType;
   let notAdminSelectorAdder: any = {
     where: {
-      isShown: true,
       OR: [
         {
-          ip: ip,
+          isShown: true,
+          OR: [
+            {
+              ip: ip,
+            },
+            {
+              type: {
+                in: [100, 200],
+              },
+            },
+          ],
         },
         {
-          type: {
-            in: [100, 200],
-          },
+          isShown: false,
+          ip: ip,
+          type: 201,
         },
       ],
     },
@@ -45,9 +54,7 @@ export default async function handle(
     },
     where: {
       type: {
-        not: {
-          in: [300, 500],
-        },
+        not: 300,
       },
     },
     select: {
@@ -130,6 +137,12 @@ export default async function handle(
       })
     );
 
+  console.log(
+    JSON.stringify({
+      ...adminSelector,
+      ...notAdminSelectorAdder,
+    })
+  );
   return res.status(200).send(
     (
       await prismadb.post.findMany({
