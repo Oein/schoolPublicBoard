@@ -21,6 +21,7 @@ interface Message {
 
 const socket = socketIO(process.env.NEXT_PUBLIC_BACKEND as string, {
   autoConnect: false,
+  withCredentials: true,
 });
 export default function Chat() {
   let [messages, setMessages] = useState<Message[]>([]);
