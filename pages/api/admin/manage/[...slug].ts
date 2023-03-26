@@ -71,6 +71,11 @@ export default async function handler(
             id: postId,
           },
         });
+        await prismadb.chat.deleteMany({
+          where: {
+            belongsTo: postId,
+          },
+        });
         return res.send({
           s: true,
         });
